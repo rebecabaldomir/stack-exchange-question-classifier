@@ -5,7 +5,9 @@ Rebeca Andrade Baldomir
 Junho, 2018
 
 ### Proposta
-Esse problema Stack Exchange Classifier é semelhante a vários desafios comuns de classificação de texto (https://www.hackerrank.com/challenges/stack-exchange-question-classifier/problem). Dado o texto da pergunta, você precisa identificar se ele foi retirado da seção eletrônica, android, scifi, gis, fotografia, etc.
+Esse problema Stack Exchange Classifier é semelhante a vários desafios comuns de classificação de texto (https://www.hackerrank.com/challenges/stack-exchange-question-classifier/problem). Dado o texto da pergunta, você precisa identificar se ele foi retirado da seção eletrônica, android, scifi, gis, fotografia, etc. 
+
+Solução baseada em https://towardsdatascience.com/machine-learning-nlp-text-classification-using-scikit-learn-python-and-nltk-c52b92a7c73a
 
 ### Instalação
 
