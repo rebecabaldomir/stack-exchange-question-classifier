@@ -104,8 +104,8 @@ print(np.mean(y_pred == np.array(y_true['labels']) ))
 
 
 ```python
-naive_bayes_tfidf.fit(X_train_tfidf, y)
-y_pred = naive_bayes_tfidf.predict(X_test_tfidf)
+naive_bayes.fit(X_train_tfidf, y)
+y_pred = naive_bayes.predict(X_test_tfidf)
 print(np.mean(y_pred == np.array(y_true['labels']) ))
 ```
 
@@ -134,42 +134,6 @@ print(np.mean(y_pred == np.array(y_true['labels']) ))
     0.922166045769026
     
 
-Utilizamos o Grid Search para encontrar a melhor configuração de parâmetros para o SGDClassifier, que apresentou melhor pontuação na predição das classes procuradas.
-
-
-```python
-from sklearn.model_selection import GridSearchCV
-params={ 'loss': ('hinge', 'log', 'modified_huber', 'squared_hinge', 'perceptron'),
-        'penalty':('none', 'l2', 'l1', 'elasticnet'), 
-       'alpha':(1e-2, 1e-3)}
-gs_clf = GridSearchCV(clf,param_grid=params)
-gs_clf = gs_clf.fit(X_train_tfidf, y)
-```
-
-
-```python
-gs_clf.best_score_
-```
-
-
-
-
-    0.8985607596814877
-
-
-
-
-```python
-gs_clf.best_params_
-```
-
-
-
-
-    {'alpha': 0.001, 'loss': 'modified_huber', 'penalty': 'l2'}
-
-
-
 Gráfico com a quantidade de vezes que cada categoria foi predita pelo algoritmo SGDClassifier.
 
 
@@ -187,5 +151,5 @@ plt.show()
 ```
 
 
-![png](output_25_0.png)
+![png](output_21_0.png)
 
