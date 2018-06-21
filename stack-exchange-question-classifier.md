@@ -76,17 +76,6 @@ naive_bayes = MultinomialNB(fit_prior=False)
 clf = SGDClassifier(loss='modified_huber', penalty='l2', alpha=1e-4, random_state=42)
 ```
 
-
-
-
-    SGDClassifier(alpha=0.0001, average=False, class_weight=None, epsilon=0.1,
-           eta0=0.0, fit_intercept=True, l1_ratio=0.15,
-           learning_rate='optimal', loss='modified_huber', max_iter=None,
-           n_iter=None, n_jobs=1, penalty='l2', power_t=0.5, random_state=42,
-           shuffle=True, tol=None, verbose=0, warm_start=False)
-
-
-
 ### 3. Teste
 
 Leitura dos arquivos de teste (input00.txt), transformação do arquivo de teste para utilizá-lo nos algoritmos e leitura do arquivo com a classificação correta (output.txt). 
@@ -116,11 +105,11 @@ print(np.mean(y_pred == np.array(y_true['labels']) ))
 
 ```python
 naive_bayes_tfidf.fit(X_train_tfidf, y)
-y_pred = naive_bayes_tfidf.predict(X_test)
+y_pred = naive_bayes_tfidf.predict(X_test_tfidf)
 print(np.mean(y_pred == np.array(y_true['labels']) ))
 ```
 
-    0.8504523682810006
+    0.8879723257051623
     
 
 Vamo seguir a mesma abordagem, executando o SGDClassifier com os dados de teste apenas como 'bag of words' e com o tratamento do TF-IDF para observamos o impacto que essa abordagem pode trazer nesse algoritmo.
@@ -128,11 +117,11 @@ Vamo seguir a mesma abordagem, executando o SGDClassifier com os dados de teste 
 
 ```python
 clf.fit(X_train, y)
-y_pred = clf.predict(X_test_tfidf)
+y_pred = clf.predict(X_test)
 print(np.mean(y_pred == np.array(y_true['labels']) ))
 ```
 
-    0.6252660989888238
+    0.8843799893560405
     
 
 
