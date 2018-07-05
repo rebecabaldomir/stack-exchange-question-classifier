@@ -27,8 +27,8 @@ Para executar algoritmos de aprendizado de máquina, precisamos converter os arq
 
 
 ```python
-# df = CountVectorizer(stop_words='english', strip_accents='unicode', lowercase=True, min_df=3, max_df=0.9, ngram_range=(1, 2), max_features=19000)
-df = CountVectorizer()
+df = CountVectorizer(stop_words='english', strip_accents='unicode', ngram_range=(1, 2))
+#df = CountVectorizer()
 
 
 data_test = data['excerpt'] + ' ' + data['question']
@@ -43,7 +43,7 @@ X_train.shape
 
 
 
-    (20219, 32263)
+    (20219, 344608)
 
 
 
@@ -59,7 +59,7 @@ X_train_tfidf.shape
 
 
 
-    (20219, 32263)
+    (20219, 344608)
 
 
 
@@ -96,20 +96,26 @@ Vamo executar o naive bayes com os dados de teste apenas como 'bag of words' e c
 ```python
 naive_bayes.fit(X_train, y)
 y_pred = naive_bayes.predict(X_test)
-print(np.mean(y_pred == np.array(y_true['labels']) ))
+
+print "Média de acerto: ",np.mean(y_pred == np.array(y_true['labels']) )
+print "Acurácia: ", naive_bayes.score(X_train, y)
 ```
 
-    0.9069984034060671
+    Média de acerto:  0.9042708887706227
+    Acurácia:  0.9937682377961323
     
 
 
 ```python
 naive_bayes.fit(X_train_tfidf, y)
 y_pred = naive_bayes.predict(X_test_tfidf)
-print(np.mean(y_pred == np.array(y_true['labels']) ))
+
+print "Média de acerto: ",np.mean(y_pred == np.array(y_true['labels']) )
+print "Acurácia: ", naive_bayes.score(X_train_tfidf, y)
 ```
 
-    0.8879723257051623
+    Média de acerto:  0.8966870675891432
+    Acurácia:  0.9833325090261635
     
 
 Vamo seguir a mesma abordagem, executando o SGDClassifier com os dados de teste apenas como 'bag of words' e com o tratamento do TF-IDF para observamos o impacto que essa abordagem pode trazer nesse algoritmo.
@@ -118,20 +124,26 @@ Vamo seguir a mesma abordagem, executando o SGDClassifier com os dados de teste 
 ```python
 clf.fit(X_train, y)
 y_pred = clf.predict(X_test)
-print(np.mean(y_pred == np.array(y_true['labels']) ))
+
+print "Média de acerto: ",np.mean(y_pred == np.array(y_true['labels']) )
+print "Acurácia: ", clf.score(X_train, y)
 ```
 
-    0.8843799893560405
+    Média de acerto:  0.8956226716338478
+    Acurácia:  0.9998516247094317
     
 
 
 ```python
 clf.fit(X_train_tfidf, y)
 y_pred = clf.predict(X_test_tfidf)
-print(np.mean(y_pred == np.array(y_true['labels']) ))
+
+print "Média de acerto: ", np.mean(y_pred == np.array(y_true['labels']) )
+print "Acurácia: ", clf.score(X_train_tfidf, y)
 ```
 
-    0.922166045769026
+    Média de acerto:  0.9250931346460883
+    Acurácia:  0.9990108313962115
     
 
 Gráfico com a quantidade de vezes que cada categoria foi predita pelo algoritmo SGDClassifier.
@@ -153,3 +165,50 @@ plt.show()
 
 ![png](output_21_0.png)
 
+
+Stemming reduz a palavra ao seu radical, por exemplo *gamming -> game*. Essa normalização pode gerar um ganho na análise textual.
+
+
+```python
+from nltk.stem import PorterStemmer
+from nltk.tokenize import sent_tokenize, word_tokenize
+
+ps = PorterStemmer()
+
+words=[]
+word_stemmer=[]
+
+for i, v in data_test.items():
+    words.append(word_tokenize(v))
+    
+for word in words:
+    word_stemmer.append(ps.stem(str(word)))
+```
+
+
+```python
+X_word_stemmer = df.transform(word_stemmer)
+X_word_stemmer_tfidf = tfidf_transformer.fit_transform(X_word_stemmer)
+
+X_word_stemmer.shape
+```
+
+
+
+
+    (20219, 344608)
+
+
+
+
+```python
+clf.fit(X_word_stemmer_tfidf, y)
+y_pred = clf.predict(X_test_tfidf)
+
+print "Média de acerto: ", np.mean(y_pred == np.array(y_true['labels']) )
+print "Acurácia: ", clf.score(X_word_stemmer_tfidf, y)
+```
+
+    Média de acerto:  0.9243613624268228
+    Acurácia:  0.9990108313962115
+    
